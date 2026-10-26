@@ -7,10 +7,25 @@
 	"category": "widgets",
 	"icon": "excerpt-view",
 	"description": "Featured post plus four cards from a chosen category.",
-	"example": {},
-	"supports": {
-		"html": false
-	},
+	 "example": {},
+        "attributes": {
+                "categoryId": {
+                        "type": "number",
+                        "default": 0
+                },
+                "showCategoryLabel": {
+                        "type": "boolean",
+                        "default": true
+                },
+                "showExcerpt": {
+                        "type": "boolean",
+                        "default": true
+                }
+        },
+        "supports": {
+                "html": false,
+                "align": [ "wide", "full" ]
+        },
 	"textdomain": "latest-articles-block",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
