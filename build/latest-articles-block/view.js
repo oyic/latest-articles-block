@@ -1,0 +1,1 @@
+console.log("Hello World! (from oyic-latest-articles-block block)");
