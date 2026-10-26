@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Latest Articles",
 	"category": "widgets",
-	"icon": "smiley",
+	"icon": "excerpt-view",
 	"description": "Featured post plus four cards from a chosen category.",
 	"example": {},
 	"supports": {
@@ -15,6 +15,5 @@
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-	"render": "file:./render.php",
-	"viewScript": "file:./view.js"
+	"render": "file:./render.php"
 }
