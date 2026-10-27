@@ -12,8 +12,9 @@
 	--lab-rule-space: 1.125rem;
 	--lab-rule: 1px solid #dcdcdc;
 	--lab-thumb: 35%;
-	--lab-serif: Georgia, "Times New Roman", Times, serif;
+	--lab-serif: georgia, "Times New Roman", times, serif;
 	--lab-placeholder: #e4e4e4;
+	--lab-stripes: transparent 0 12px, rgba(0, 0, 0, 0.04) 12px 13px;
 
 	// Breakpoint follows the block's own width, not the screen.
 	container-type: inline-size;
@@ -53,11 +54,7 @@
 		display: block;
 		width: 100%;
 		height: 100%;
-		background: repeating-linear-gradient(
-			-45deg,
-			transparent 0 12px,
-			rgba(0, 0, 0, 0.04) 12px 13px
-		);
+		background: repeating-linear-gradient(-45deg, var(--lab-stripes));
 	}
 
 	// Text
@@ -174,6 +171,7 @@
 		}
 
 		&__card {
+
 			&:nth-child(n + 3) {
 				margin-top: 0;
 				padding-top: 0;
@@ -196,8 +194,10 @@
 	}
 }
 
-// Hover effects, picked in the block's Styles panel (see "styles" in block.json).
+// Hover effects, picked in the block's Styles panel
+// (see "styles" in block.json).
 .wp-block-oyic-latest-articles-block {
+
 	&.is-style-hover-zoom img,
 	&.is-style-hover-dim img {
 		transition: transform 0.4s ease, filter 0.4s ease;
@@ -212,6 +212,7 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+
 		img {
 			transition: none;
 		}

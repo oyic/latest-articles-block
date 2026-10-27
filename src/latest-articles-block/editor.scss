@@ -2,7 +2,8 @@
  * Editor-only styles. Shared styles live in style.scss.
  */
 
-// Links in the preview would leave the editor; let clicks select the block instead.
+// Links in the preview would leave the editor;
+// let clicks select the block instead.
 .wp-block-oyic-latest-articles-block a {
 	pointer-events: none;
 }
