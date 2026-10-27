@@ -31,3 +31,6 @@ node_modules/
 
 # Compiled block assets (run npm run build)
 build/
+
+# macOS
+.DS_Store
