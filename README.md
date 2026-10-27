@@ -18,7 +18,7 @@ The layout follows the [design reference](docs/design-reference.png) supplied wi
 - **Responsive:** collapses to one column with smaller thumbnails when the block is narrower than 600px.
 - **Editor controls:** category dropdown, "Display category label" toggle, "Show subtext (excerpt)" toggle.
 - **Live preview** in the editor that updates as settings change.
-- **Sponsored posts (bonus):** a "Sponsorship" field on each post adds "Sponsored by BRAND NAME" to that post in the block.
+- **Sponsored posts (bonus):** a "Sponsorship" field on each post adds "Sponsored by BRAND NAME" to that post's card in the block.
 - **Image hover styles (extra):** Default, Zoom on hover or Dim on hover, chosen in the block's Styles panel.
 
 ## Requirements
@@ -84,7 +84,9 @@ The compiled `build/` folder isn't committed, so step 2 is required when install
 
 1. Edit a post and open the **Post** tab in the sidebar.
 2. In the **Sponsorship** panel, type the brand name in **Sponsored by** and save.
-3. Wherever that post appears in the block, its category label is replaced by "Sponsored by BRAND NAME" under the headline. <!-- TODO: confirm this applies to the featured article too once that change is committed. -->
+3. When that post appears as one of the cards, its category label is replaced by "Sponsored by BRAND NAME" under the headline.
+
+> **Note:** the sponsored label appears on **cards only**, as in the design reference and the brief ("displays 'Sponsored by …' on an article card"). If a sponsored post becomes the newest in its category, it shows as the featured article **without** the label, with its normal category label instead.
 
 Leave the field empty for normal posts.
 
@@ -136,7 +138,7 @@ bash path/to/latest-articles-block/bin/seed.sh --reset  # remove it
 - **One template.** The editor preview uses `ServerSideRender`, so it shows exactly the same markup as the front end.
 - **Category label** shows the name of the category selected in the block, since every post shown belongs to it.
 - **Excerpt** shows only a hand-written excerpt, trimmed to 25 words. Posts without one show no excerpt.
-- **Sponsored label** replaces the category label, following the design reference.
+- **Sponsored label** appears on cards only and replaces the category label, following the design reference.
 - **Fonts:** headlines use a system serif stack (Georgia, Times) and other text uses the theme's font. No external fonts are loaded.
 - **Responsive layout** uses a CSS container query, so it adapts to the block's own width, not just the screen.
 
@@ -145,6 +147,7 @@ bash path/to/latest-articles-block/bin/seed.sh --reset  # remove it
 - **Preview speed:** every settings change makes a request to render the preview. A preview built in React would update instantly.
 - **Caching:** the query runs on every page view. Caching post IDs in a transient, cleared when posts are published or updated, would reduce database load.
 - **Duplicate posts:** two blocks for the same category on one page show the same posts. A "skip posts shown above" option would fix this.
+- **Sponsored featured article:** a sponsored post in the featured position isn't labelled as sponsored. Most advertising rules require sponsored content to be disclosed wherever it appears, so a production version should show the label on the featured article too. It's a small change in `render.php` that reuses the card's markup and styles.
 - **Meta key:** `sponsored_by` isn't prefixed; a prefixed key such as `oyic_sponsored_by` would avoid clashes with other plugins.
 - **Fixed post count:** always five posts. The count could become an editor setting.
 - **Tests:** testing is manual against the demo content. PHPUnit tests for `render.php` and a Playwright end-to-end test would be the next step.
