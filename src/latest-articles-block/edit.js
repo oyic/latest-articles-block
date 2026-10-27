@@ -23,9 +23,9 @@ import './editor.scss';
 /**
  * Editor view: sidebar settings plus a live preview rendered by render.php.
  *
- * @param {Object}   props		 Block props.
- * @param {Object}   props.attributes	 Saved block settings.
- * @param {Function} props.setAttributes Updates block settings.
+ * @param {Object}                       props               Block props.
+ * @param {Object}                       props.attributes    Saved block settings.
+ * @param {(attributes: Object) => void} props.setAttributes Updates block settings.
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {

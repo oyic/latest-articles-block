@@ -1,5 +1,7 @@
 # Latest Articles
 
+[![CI](https://github.com/oyic/latest-articles-block/actions/workflows/ci.yml/badge.svg)](https://github.com/oyic/latest-articles-block/actions/workflows/ci.yml)
+
 A Gutenberg block that shows the newest posts from a chosen category in a magazine-style layout: one large featured article followed by four smaller article cards. Editors pick a category once and the block keeps itself up to date as new posts are published.
 
 ![The block on the front end, showing Gardening posts](docs/screenshot-front-end.png)
@@ -116,13 +118,28 @@ latest-articles-block/
 | Command | What it does |
 |---|---|
 | `npm install` | Installs build tools |
+| `composer install` | Installs PHP lint tools (needs [Composer](https://getcomposer.org/)) |
 | `npm start` | Builds in development mode and rebuilds on every change |
 | `npm run build` | Production build into `build/` |
-| `npm run lint:js` / `npm run lint:css` | Checks code against WordPress coding standards |
+| `npm run lint:js` / `npm run lint:css` | Checks JavaScript and SCSS against WordPress coding standards |
+| `composer lint` | Checks PHP against WordPress Coding Standards and PHP 7.4+ compatibility |
+| `composer lint:fix` | Fixes the PHP issues that can be fixed automatically |
 | `npm run format` | Formats JavaScript with the WordPress Prettier config |
 | `npm run plugin-zip` | Creates an installable `latest-articles-block.zip` |
 
 Restart `npm start` after editing `block.json`.
+
+### Continuous integration
+
+Every push to `main` and every pull request runs [GitHub Actions](.github/workflows/ci.yml):
+
+| Job | Checks |
+|---|---|
+| JS & CSS lint, build | `npm run lint:js`, `npm run lint:css`, then a production build |
+| PHP coding standards | `composer lint`: WordPress Coding Standards, plus PHPCompatibility for PHP 7.4 and later |
+| PHP syntax | Every PHP file parses on PHP 7.4, 8.0, 8.1, 8.2, 8.3 and 8.4 |
+
+Automated tests are listed under future improvements.
 
 ### Demo content
 
@@ -150,7 +167,7 @@ bash path/to/latest-articles-block/bin/seed.sh --reset  # remove it
 - **Duplicate posts:** two blocks for the same category on one page show the same posts. A "skip posts shown above" option would fix this.
 - **Sponsored featured article:** a sponsored post in the featured position isn't labelled as sponsored. Most advertising rules require sponsored content to be disclosed wherever it appears, so a production version should show the label on the featured article too. It's a small change in `render.php` that reuses the card's markup and styles.
 - **Meta key:** `sponsored_by` isn't prefixed; a prefixed key such as `oyic_sponsored_by` would avoid clashes with other plugins.
-- **Tests:** testing is manual against the demo content. PHPUnit tests for `render.php` and a Playwright end-to-end test would be the next step.
+- **Tests:** CI checks code style and syntax, but behaviour is tested by hand against the demo content. Next steps: PHPUnit integration tests for `render.php` on `@wordpress/env` (post order, post count, empty category, sticky posts, sponsor escaping), PHPStan static analysis, a Playwright end-to-end test of the editor, and the WordPress Plugin Check action.
 
 ## Use of AI tools
 

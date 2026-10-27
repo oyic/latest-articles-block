@@ -15,9 +15,16 @@
 		"start": "wp-scripts start --webpack-copy-php --blocks-manifest"
 	},
 	"dependencies": {
-		"@wordpress/block-editor": "latest",
-		"@wordpress/blocks": "latest",
-		"@wordpress/i18n": "latest"
+		"@wordpress/block-editor": "^19.0.0",
+		"@wordpress/blocks": "^17.0.0",
+		"@wordpress/components": "^43.0.0",
+		"@wordpress/core-data": "^9.0.0",
+		"@wordpress/data": "^11.0.0",
+		"@wordpress/editor": "^16.0.0",
+		"@wordpress/html-entities": "^5.0.0",
+		"@wordpress/i18n": "^7.0.0",
+		"@wordpress/plugins": "^8.0.0",
+		"@wordpress/server-side-render": "^7.0.0"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^37.0.0"
