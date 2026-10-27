@@ -13,6 +13,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './style.scss';
 import Edit from './edit';
+import './sponsor-panel';
 import metadata from './block.json';
 
 /**

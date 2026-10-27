@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       Latest Articles
- * Description:       Featured post plus four cards from a chosen category.
- * Version:           0.1.0
+ * Plugin Name:	      Latest Articles
+ * Description:	      Featured post plus four cards from a chosen category.
+ * Version:	      0.1.0
  * Requires at least: 6.8
  * Requires PHP:      7.4
- * Author:            The WordPress Contributors
- * License:           GPL-2.0-or-later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       latest-articles-block
+ * Author:	      The WordPress Contributors
+ * License:	      GPL-2.0-or-later
+ * License URI:	      https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:	      latest-articles-block
  *
  * @package Oyic
  */
@@ -28,3 +28,24 @@ function oyic_latest_articles_block_block_init() {
 	wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
 }
 add_action( 'init', 'oyic_latest_articles_block_block_init' );
+
+/**
+ * Registers the "Sponsored by" post meta shown on article cards.
+ */
+function oyic_latest_articles_block_register_meta() {
+	register_post_meta(
+		'post',
+		'sponsored_by',
+		array(
+			'type'		    => 'string',
+			'single'	    => true,
+			'default'	    => '',
+			'show_in_rest'	    => true,
+			'sanitize_callback' => 'sanitize_text_field',
+			'auth_callback'	    => function ( $allowed, $meta_key, $post_id ) {
+				return current_user_can( 'edit_post', $post_id );
+			},
+		)
+	);
+}
+add_action( 'init', 'oyic_latest_articles_block_register_meta' );
