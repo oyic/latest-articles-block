@@ -20,6 +20,10 @@
 		"showExcerpt": {
 			"type": "boolean",
 			"default": true
+		},
+		"postsToShow": {
+			"type": "number",
+			"default": 5
 		}
 	},
 	"supports": {

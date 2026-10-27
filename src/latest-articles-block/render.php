@@ -15,6 +15,7 @@
 $category_id  = isset( $attributes['categoryId'] ) ? absint( $attributes['categoryId'] ) : 0;
 $show_label   = ! empty( $attributes['showCategoryLabel'] );
 $show_excerpt = ! empty( $attributes['showExcerpt'] );
+$posts_to_show = isset( $attributes['postsToShow'] ) ? min( 9, max( 1, absint( $attributes['postsToShow'] ) ) ) : 5;
 
 // No category chosen, or it was deleted: render nothing on the front end.
 if ( ! $category_id ) {
@@ -30,7 +31,7 @@ $query = new WP_Query(
 		'cat'		      => $category_id,
 		'post_type'	      => 'post',
 		'post_status'	      => 'publish',
-		'posts_per_page'      => 5,
+		'posts_per_page'      => $posts_to_show,
 		'orderby'	      => 'date',
 		'order'		      => 'DESC',
 		'ignore_sticky_posts' => true,

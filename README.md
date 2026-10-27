@@ -13,7 +13,7 @@ The layout follows the [design reference](docs/design-reference.png) supplied wi
 ## Features
 
 - **Featured article:** the newest post in the category, with a 16:9 image, optional category label, large serif headline and optional excerpt.
-- **Card grid:** the next four posts in a 2 × 2 grid, each with a square thumbnail and a serif headline.
+- **Card grid:** the following posts in a two-column grid (four by default, a 2 × 2 grid), each with a square thumbnail and a serif headline.
 - **Thin dividers** between the featured article and the grid, and between grid rows, with equal space above and below.
 - **Responsive:** collapses to one column with smaller thumbnails when the block is narrower than 600px.
 - **Editor controls:** category dropdown, "Display category label" toggle, "Show subtext (excerpt)" toggle.
@@ -62,20 +62,21 @@ The compiled `build/` folder isn't committed, so step 2 is required when install
 4. Adjust the toggles in the sidebar:
    - **Display category label:** shows the category name above each headline.
    - **Show subtext (excerpt):** shows the excerpt under the featured article's headline.
+   - **Number of posts:** how many posts to show, from 1 to 9, including the featured article. Default 5.
 5. Optional: open the **Styles** tab in the sidebar to choose an image hover effect.
 6. Optional: on the block toolbar, choose **Wide width** or **Full width**.
 
 ### Post order
 
 - Posts are ordered by **publish date, newest first**.
-- The newest post is the featured article, and the next four are the cards.
+- The newest post is the featured article, and the next ones are the cards (four with the default setting of 5).
 - Sticky posts are treated like any other post and keep their date order.
 - Only published posts are shown. Drafts, scheduled and private posts are skipped.
 - When a new post is published in the category, it appears as the featured article automatically. Nobody needs to edit the block.
 
 ### Fewer posts and empty categories
 
-- With fewer than five posts, the block shows only the posts that exist. For example, one post shows just the featured article, with no empty grid.
+- With fewer posts than the chosen number, the block shows only the posts that exist. For example, one post shows just the featured article, with no empty grid.
 - If the category has no posts, the editor shows a message and the front end shows nothing.
 - If the chosen category is deleted, the editor asks for a new one and the front end shows nothing.
 - Posts without a featured image show a neutral striped placeholder of the same size.
@@ -149,7 +150,6 @@ bash path/to/latest-articles-block/bin/seed.sh --reset  # remove it
 - **Duplicate posts:** two blocks for the same category on one page show the same posts. A "skip posts shown above" option would fix this.
 - **Sponsored featured article:** a sponsored post in the featured position isn't labelled as sponsored. Most advertising rules require sponsored content to be disclosed wherever it appears, so a production version should show the label on the featured article too. It's a small change in `render.php` that reuses the card's markup and styles.
 - **Meta key:** `sponsored_by` isn't prefixed; a prefixed key such as `oyic_sponsored_by` would avoid clashes with other plugins.
-- **Fixed post count:** always five posts. The count could become an editor setting.
 - **Tests:** testing is manual against the demo content. PHPUnit tests for `render.php` and a Playwright end-to-end test would be the next step.
 
 ## Use of AI tools

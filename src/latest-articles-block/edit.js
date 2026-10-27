@@ -8,6 +8,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	Placeholder,
+	RangeControl,
 	SelectControl,
 	ToggleControl,
 	Spinner,
@@ -28,7 +29,8 @@ import './editor.scss';
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const { categoryId, showCategoryLabel, showExcerpt } = attributes;
+	const { categoryId, showCategoryLabel, showExcerpt, postsToShow } =
+		attributes;
 
 	// All post categories via the REST API. null while loading.
 	const categories = useSelect(
@@ -82,7 +84,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								'latest-articles-block'
 							)
 						: __(
-								'Choose a category to show its five newest posts.',
+								'Choose a category to show its newest posts.',
 								'latest-articles-block'
 							)
 				}
@@ -146,6 +148,24 @@ export default function Edit( { attributes, setAttributes } ) {
 						onChange={ ( value ) =>
 							setAttributes( { showExcerpt: value } )
 						}
+					/>
+					<RangeControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						label={ __(
+							'Number of posts',
+							'latest-articles-block'
+						) }
+						help={ __(
+							'Includes the featured article.',
+							'latest-articles-block'
+						) }
+						value={ postsToShow }
+						onChange={ ( value ) =>
+							setAttributes( { postsToShow: value } )
+						}
+						min={ 1 }
+						max={ 9 }
 					/>
 				</PanelBody>
 			</InspectorControls>
