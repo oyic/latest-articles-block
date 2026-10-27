@@ -26,6 +26,11 @@
 		"html": false,
 		"align": [ "wide", "full" ]
 	},
+	"styles": [
+		{ "name": "default", "label": "Default", "isDefault": true },
+		{ "name": "hover-zoom", "label": "Zoom on hover" },
+		{ "name": "hover-dim", "label": "Dim on hover" }
+	],
 	"textdomain": "latest-articles-block",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
