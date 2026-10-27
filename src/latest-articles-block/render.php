@@ -7,14 +7,20 @@
  *
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  *
- * @var array	 $attributes Block attributes.
- * @var string	 $content    Block inner content (unused).
- * @var WP_Block $block	     Block instance.
+ * @var array    $attributes Block attributes.
+ * @var string   $content    Block inner content (unused).
+ * @var WP_Block $block      Block instance.
+ *
+ * @package Oyic
  */
 
-$category_id  = isset( $attributes['categoryId'] ) ? absint( $attributes['categoryId'] ) : 0;
-$show_label   = ! empty( $attributes['showCategoryLabel'] );
-$show_excerpt = ! empty( $attributes['showExcerpt'] );
+// WordPress includes this file inside a function, so these variables are
+// local to the render call, not globals, and need no plugin prefix.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+
+$category_id   = isset( $attributes['categoryId'] ) ? absint( $attributes['categoryId'] ) : 0;
+$show_label    = ! empty( $attributes['showCategoryLabel'] );
+$show_excerpt  = ! empty( $attributes['showExcerpt'] );
 $posts_to_show = isset( $attributes['postsToShow'] ) ? min( 9, max( 1, absint( $attributes['postsToShow'] ) ) ) : 5;
 
 // No category chosen, or it was deleted: render nothing on the front end.
@@ -28,14 +34,14 @@ if ( ! $category instanceof WP_Term ) {
 
 $query = new WP_Query(
 	array(
-		'cat'		      => $category_id,
-		'post_type'	      => 'post',
-		'post_status'	      => 'publish',
+		'cat'                 => $category_id,
+		'post_type'           => 'post',
+		'post_status'         => 'publish',
 		'posts_per_page'      => $posts_to_show,
-		'orderby'	      => 'date',
-		'order'		      => 'DESC',
+		'orderby'             => 'date',
+		'order'               => 'DESC',
 		'ignore_sticky_posts' => true,
-		'no_found_rows'	      => true,
+		'no_found_rows'       => true,
 	)
 );
 
@@ -48,7 +54,7 @@ $items = $query->posts;
 $hero  = array_shift( $items );
 $label = $show_label ? $category->name : '';
 ?>
-<div <?php echo get_block_wrapper_attributes(); ?>>
+<div <?php echo get_block_wrapper_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped inside the function. ?>>
 	<article class="wp-block-oyic-latest-articles-block__hero">
 		<div class="wp-block-oyic-latest-articles-block__hero-media">
 			<?php if ( has_post_thumbnail( $hero ) ) : ?>
