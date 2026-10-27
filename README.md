@@ -171,25 +171,38 @@ bash path/to/latest-articles-block/bin/seed.sh --reset  # remove it
 
 ## Use of AI tools
 
-<!--
-TODO: Review and complete this section yourself. The guidelines require
-an accurate account, so edit the list below to match what really happened,
-and fill in "What I changed".
--->
-
 **Tool used:** Claude Code (Anthropic), in the terminal.
 
 **What I used it for:**
 
-- Turning the brief into a task plan, and reading the layout specs out of the design reference image.
-- Drafting code that I then reviewed, pasted and committed step by step: block attributes, sidebar controls, `render.php`, styles, sponsor meta and panel, hover styles.
-- Writing and debugging the `bin/seed.sh` demo-content script.
-- Diagnosing problems: a PHP parse error, spaces instead of tabs, a misplaced `styles` key in `block.json`.
-- Drafting this README and a study guide for the code review.
+- Turning the brief into a task plan, and extracting the design reference image from the task document so its layout and spacing could be measured.
+- Drafting the plugin code in small steps. I applied each step by hand (pasting, running the commands and committing myself) and checked it in the editor and on the front end before moving on: block attributes, sidebar controls, `render.php`, styles, the editor preview, the sponsored label, hover styles and the post count.
+- Writing, running and debugging the `bin/seed.sh` demo-content script.
+- Diagnosing problems as they came up (see below).
+- Setting up the lint CI on a separate branch as a pull request, which I reviewed and merged.
+- Taking the screenshots in `docs/`, drafting this README, and writing a study guide I used to prepare for the code review.
 
-**What I changed or decided myself:**
+**Decisions I made:**
 
-- TODO: list the changes you made to generated code, and the decisions you made (for example: which preview approach, the label behaviour, adding hover styles).
+- **Applying and committing every change myself**, one feature per commit, rather than having code written straight into the repo, so I understand each part.
+- **Image hover effects:** my idea, added as an extra beyond the brief. I chose to build them as Block Styles (CSS only) after discussing the options.
+- **Number of posts setting:** I asked for the post count to be an editor setting, defaulting to 5 to match the brief.
+- **Sponsored label on cards only:** when the gap on the featured article came up, I decided to keep the brief's scope ("on an article card") and document it as a known limitation, rather than add more code.
+- **CI scope:** I chose lint, build and PHP-version checks for now, and to list PHPUnit and end-to-end tests as future work, given the time available.
+
+**Problems I caught:**
+
+- The seed script ran without creating any posts. I reported it, and the cause was a quoting bug in the script.
+- The hover style options weren't showing in the editor, and later the post count slider didn't work. In both cases the cause was in `block.json`: the `styles` key was nested in the wrong place, and the `postsToShow` attribute was missing.
+- The screenshots and README hadn't been committed.
+- The review notes still described the block before the post count setting was added.
+
+**Recommendations I reviewed and accepted:**
+
+- **Editor preview with `ServerSideRender`,** so the editor and the front end share one PHP template. I accepted the trade-off of a short loading spinner on each change.
+- **Category label shows the selected category**, since every post shown belongs to it.
+- **Keeping `build/` out of git**, with installation from source or from a release zip.
+- **Fixes to my own mistakes while applying code:** JavaScript pasted into the PHP file (which broke the site), and spaces instead of tabs from my editor settings.
 
 ## License
 
