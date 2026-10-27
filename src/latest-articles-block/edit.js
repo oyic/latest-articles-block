@@ -7,6 +7,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import {
         PanelBody,
+        Placeholder,
         SelectControl,
         ToggleControl,
         Spinner,
@@ -14,10 +15,12 @@ import {
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 import { decodeEntities } from '@wordpress/html-entities';
+import ServerSideRender from '@wordpress/server-side-render';
+import metadata from './block.json';
 import './editor.scss';
 
 /**
- * Editor view: sidebar settings plus a placeholder for the block.
+ * Editor view: sidebar settings plus a live preview rendered by render.php.
  *
  * @param {Object}   props               Block props.
  * @param {Object}   props.attributes    Saved block settings.
@@ -49,26 +52,72 @@ export default function Edit( { attributes, setAttributes } ) {
 
         const selected = categories?.find( ( c ) => c.id === categoryId );
 
+        const categoryControl =
+                categories === null ? (
+                        <Spinner />
+                ) : (
+                        <SelectControl
+                                __next40pxDefaultSize
+                                __nextHasNoMarginBottom
+                                label={ __( 'Category', 'latest-articles-block' ) }
+                                value={ categoryId }
+                                options={ categoryOptions }
+                                onChange={ ( value ) =>
+                                        setAttributes( { categoryId: parseInt( value, 10 ) } )
+                                }
+                        />
+                );
+
+        let preview;
+        if ( ! selected ) {
+                // Nothing chosen yet, or the saved category has been deleted.
+                preview = (
+                        <Placeholder
+                                icon="excerpt-view"
+                                label={ __( 'Latest Articles', 'latest-articles-block' ) }
+                                instructions={
+                                        categoryId && categories
+                                                ? __(
+                                                                'The chosen category no longer exists. Pick another one.',
+                                                                'latest-articles-block'
+                                                  )
+                                                : __(
+                                                                'Choose a category to show its five newest posts.',
+                                                                'latest-articles-block'
+                                                  )
+                                }
+                        >
+                                { categoryControl }
+                        </Placeholder>
+                );
+        } else {
+                preview = (
+                        <ServerSideRender
+                                block={ metadata.name }
+                                attributes={ attributes }
+                                EmptyResponsePlaceholder={ () => (
+                                        <Placeholder
+                                                icon="excerpt-view"
+                                                label={ __( 'Latest Articles', 'latest-articles-block' ) }
+                                                instructions={ sprintf(
+                                                        /* translators: %s: category name */
+                                                        __(
+                                                                'No published posts in “%s” yet. The block fills in automatically once one is published.',
+                                                                'latest-articles-block'
+                                                        ),
+                                                        decodeEntities( selected.name )
+                                                ) }
+                                        />
+                                ) }
+                        />
+                );
+        }
+
         return (
                 <>
                         <InspectorControls>
                                 <PanelBody title={ __( 'Settings', 'latest-articles-block' ) }>
-                                        { categories === null ? (
-                                                <Spinner />
-                                        ) : (
-                                                <SelectControl
-                                                        __next40pxDefaultSize
-                                                        __nextHasNoMarginBottom
-                                                        label={ __( 'Category', 'latest-articles-block' ) }
-                                                        value={ categoryId }
-                                                        options={ categoryOptions }
-                                                        onChange={ ( value ) =>
-                                                                setAttributes( {
-                                                                        categoryId: parseInt( value, 10 ),
-                                                                } )
-                                                        }
-                                                />
-                                        ) }
+                                        { categoryControl }
                                         <ToggleControl
                                                 __nextHasNoMarginBottom
                                                 label={ __(
@@ -97,23 +146,7 @@ export default function Edit( { attributes, setAttributes } ) {
                                         />
                                 </PanelBody>
                         </InspectorControls>
-                        <div { ...useBlockProps() }>
-                                <p>
-                                        { selected
-                                                ? sprintf(
-                                                                /* translators: %s: category name */
-                                                                __(
-                                                                        'Latest articles from: %s',
-                                                                        'latest-articles-block'
-                                                                ),
-                                                                decodeEntities( selected.name )
-                                                  )
-                                                : __(
-                                                                'Choose a category in the block settings.',
-                                                                'latest-articles-block'
-                                                  ) }
-                                </p>
-                        </div>
+                        <div { ...useBlockProps() }>{ preview }</div>
                 </>
         );
 }
