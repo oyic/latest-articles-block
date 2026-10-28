@@ -22,7 +22,7 @@ The layout follows the [design reference](docs/design-reference.png) supplied wi
 - **Live preview** in the editor that updates as settings change.
 - **Sponsored posts (bonus):** a "Sponsorship" field on each post adds "Sponsored by BRAND NAME" to that post's card in the block.
 - **Image hover styles (extra):** Default, Zoom on hover or Dim on hover, chosen in the block's Styles panel.
-
+- **Number of posts (extra):** set how many posts to show, from 1 to 9, including the featured article. Default 5.
 ## Requirements
 
 | Software | Version |
